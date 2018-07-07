@@ -10,7 +10,7 @@
     <div id="signup" [hidden]="currentPage!=='signup' ">   
       <h1>Sign Up for Free</h1>
       
-      <form action="/" method="post" [formGroup]="signupForm">
+      <form action="/" method="post" [formGroup]="signupForm" (submit)="signupSubmitted=true;">
       
       <div class="top-row">
         <div class="field-wrap">
@@ -19,7 +19,7 @@
           </label>
           <input type="text" required autocomplete="off" appActiveHighlight  #fn='highlight' autocomplete="off"   formControlName="firstName"/>
         </div>
-        {{firstName.errors|json}}
+        
         <div class="field-wrap">
           <label [class]="ln.activeClasses">
             Last Name<span class="req">*</span>
@@ -27,8 +27,7 @@
           <input type="text"required autocomplete="off" appActiveHighlight  #ln='highlight'  formControlName="lastName"/>
         </div>
       </div>
-      {{lastName.errors|json}}
-
+      
 
       <div class="field-wrap">
         <label [class]="eaddr.activeClasses">
@@ -36,16 +35,16 @@
         </label>
         <input type="email" required autocomplete="off" appActiveHighlight  #eaddr='highlight'  formControlName="email"/>
       </div>
-      {{email.errors|json}}
+      
       
       <div class="field-wrap">
-        <label>
+        <label [class]="pwddir.activeClasses">
           Set A Password<span class="req">*</span>
         </label>
-        <input type="password"required autocomplete="off"/>
+        <input type="password"required autocomplete="off" appActiveHighlight  #pwddir='highlight' formControlName="pwd1"/>
       </div>
       
-      <button type="submit" class="button button-block">Get Started</button>
+      <button type="submit" class="button button-block" [disabled]="!signupForm.valid" >Get Started</button>
       
       </form>
 
@@ -54,20 +53,20 @@
     <div id="login" [hidden]="currentPage!=='login' ">   
       <h1>Welcome Back!</h1>
       
-      <form action="/" method="post">
+      <form action="/" method="post" [formGroup]="loginForm">
       
         <div class="field-wrap">
         <label  [class]="eaddr2.activeClasses">
           Email Address<span class="req">*</span>
         </label>
-        <input type="email"required autocomplete="off" appActiveHighlight  #eaddr2='highlight'/>
+        <input type="email"required autocomplete="off" appActiveHighlight  #eaddr2='highlight' formControlName='email2'/>
       </div>
       
       <div class="field-wrap">
-        <label [class]="pwd.activeClasses">
+        <label [class]="pwddir2.activeClasses">
           Password<span class="req">*</span>
         </label>
-        <input type="password"required autocomplete="off" appActiveHighlight #pwd='highlight'/>
+        <input type="password"required autocomplete="off" appActiveHighlight #pwddir2='highlight' formControlName='pwd2'/>
       </div>
       
       <p class="forgot"><a href="#">Forgot Password?</a></p>
@@ -79,6 +78,12 @@
     </div>
     
   </div><!-- tab-content -->
-  
+  <label class="highlight">
+  {{firstName.errors|json}}
+      {{lastName.errors|json}}
+      {{email.errors|json}}
+      {{pwd1.errors |json}}
+      </label>
 </div> <!-- /form -->
 
+{{signupSubmitted}}

@@ -27,8 +27,12 @@ export class AppComponent implements OnInit {
 
  public firstName: FormControl;
  public lastName: FormControl;
- public email: FormControl;
+ public email : FormControl;
+ public pwd1 : FormControl;
 
+ public email2 : FormControl;
+ public pwd2 : FormControl;
+ public signupSubmitted=false;
  
 
  constructor(  
@@ -40,16 +44,19 @@ export class AppComponent implements OnInit {
 ngOnInit() {
   
 
- this.firstName = new FormControl('', [Validators.required, Validators.minLength(4), this._nameValidator], [asyncUserExistValidator(this._userService)]);
+ this.firstName = new FormControl('', [Validators.required, Validators.minLength(4), this._nameValidator] );
     this.lastName = new FormControl('', [Validators.required, Validators.minLength(4)]);
-    this.email = new FormControl('', [Validators.required, Validators.email]);
+    this.email = new FormControl('', [Validators.required, Validators.email],[asyncUserExistValidator(this._userService)]);
+    this.pwd1 = new FormControl('', [Validators.required, Validators.minLength(6)]);
   
   this.signupForm = this._fb.group({
     firstName: this.firstName,
     lastName: this.lastName,
-    email:this.email});
+    email:this.email, 
+    pwd1:this.pwd1
+  });
 
-    debugger;
+   
    
 }
 

@@ -8,15 +8,13 @@ import { first, tap, filter, map } from 'rxjs/operators';
 })
 @Injectable()
 export class MockedusersService {
-private _userNames = of(['vasya','petya','sasha']);
+private _userNames = of(['vasya@ya.ru','petya@google.com','sasha@microsoft.com']);
   constructor() { }
 
-  public getUserNames():Observable<string[]> 
-  { return  this._userNames;}
+  public getUserNames():Observable<string[]> { return this._userNames;} 
+   
   
  
-  
-
   public checkUsername(name:string):Observable<boolean> 
   { return  this._userNames.pipe(delay(1000),
     first(x=>x.includes(name.toLowerCase()), null),

@@ -10,7 +10,7 @@ export function asyncUserExistValidator(userService:MockedusersService): AsyncVa
     return (control: AbstractControl):  Observable<ValidationErrors | null> => {
       return userService.checkUsername(control.value as string).pipe(
         tap(x => console.log('user found is: '+ x) ),
-      map(x => x ? {useralreadyexists:true} : null)));
+      map(x => x ? {useralreadyexists:true} : null));
   
     }   
     }
