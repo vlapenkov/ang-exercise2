@@ -6,11 +6,26 @@ import { first, tap, filter, map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import {ValidationErrors} from '@angular/forms/src/directives/validators';
 
-export function asyncUserExistValidator(userService:MockedusersService): AsyncValidatorFn {
+
+/*
+export function someFunc (needUser:boolean = false)
+{
+  console.log('need user is' + needUser);
+}*/
+
+
+/*
+/*  needUser - works as false in signupForm and true in loginForm 
+*/
+
+export function asyncUserExistValidator(userService:MockedusersService, needUser:boolean = false): AsyncValidatorFn {
     return (control: AbstractControl):  Observable<ValidationErrors | null> => {
       return userService.checkUsername(control.value as string).pipe(
-        tap(x => console.log('user found is: '+ x) ),
-      map(x => x ? {useralreadyexists:true} : null));
+        tap(result => {
+         console.log('user found is: '+ result);
+        console.log('need user is '+ needUser);
+      }),
+      map(result => (result && !needUser || !result && needUser) ? {userrequired:true} : null));
   
     }   
     }

@@ -178,3 +178,10 @@
     text-align: right;
   }
   
+  .errors
+  {
+    color:#a94442;
+    font-size: 9px;
+    position: absolute; 
+top:40px;
+  }

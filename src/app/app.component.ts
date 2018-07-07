@@ -1,17 +1,12 @@
 
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators, AbstractControl} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
-
-import {ValidationErrors, AsyncValidatorFn} from '@angular/forms/src/directives/validators';
-import {Observable, of} from 'rxjs';
-import {delay, find} from 'rxjs/internal/operators';
-import { first, tap, filter, map } from 'rxjs/operators';
-import { from } from 'rxjs';
+import {ValidationErrors} from '@angular/forms/src/directives/validators';
 import { MockedusersService } from './shared/mockedusers.service';
 import {asyncUserExistValidator} from './shared/userexistsvalidator';
 
 
- const existedUserNames3: Observable<string[]> = of(['vasya','petya','sasha']);
+ 
 
 
 @Component({
@@ -33,6 +28,7 @@ export class AppComponent implements OnInit {
  public email2 : FormControl;
  public pwd2 : FormControl;
  public signupSubmitted=false;
+ public loginSubmitted=false;
  
 
  constructor(  
@@ -44,11 +40,21 @@ export class AppComponent implements OnInit {
 ngOnInit() {
   
 
+
  this.firstName = new FormControl('', [Validators.required, Validators.minLength(4), this._nameValidator] );
     this.lastName = new FormControl('', [Validators.required, Validators.minLength(4)]);
-    this.email = new FormControl('', [Validators.required, Validators.email],[asyncUserExistValidator(this._userService)]);
+    this.email = new FormControl('', [Validators.required, Validators.email],[asyncUserExistValidator(this._userService,false)]);
     this.pwd1 = new FormControl('', [Validators.required, Validators.minLength(6)]);
   
+
+  this.email2 = new FormControl('',[Validators.required, Validators.email],[asyncUserExistValidator(this._userService,true)]);
+  this.pwd2 = new FormControl('', [Validators.required, Validators.minLength(6)]);
+  this.loginForm = this._fb.group({
+    email2: this.email2,
+    pwd2: this.pwd2    
+  });
+
+
   this.signupForm = this._fb.group({
     firstName: this.firstName,
     lastName: this.lastName,
@@ -56,6 +62,7 @@ ngOnInit() {
     pwd1:this.pwd1
   });
 
+  
    
    
 }
@@ -63,7 +70,7 @@ ngOnInit() {
 
 private _nameValidator(control: FormControl): ValidationErrors | null {
   const value: string = control.value;
-  const valid: boolean = /^[a-zA-Z]*$/.test(value);
+  const valid: boolean = /^[A-Za-z]*$/.test(value);
   const err = valid
     ? null
     : {nospecial: true};

@@ -17,14 +17,25 @@
           <label [class]="fn.activeClasses">
             First Name<span class="req">*</span>
           </label>
-          <input type="text" required autocomplete="off" appActiveHighlight  #fn='highlight' autocomplete="off"   formControlName="firstName"/>
+          <input type="text" required autocomplete="off" [appActiveHighlight]="'active hightlight'"  #fn='highlight' autocomplete="off"   formControlName="firstName"/>
+
+          <span class="errors" *ngIf="firstName.errors && firstName.dirty">
+            <em *ngIf="firstName.errors.required">Firstname is required</em>
+            <em *ngIf="firstName.errors.minlength">Minimal length is 4 symbols</em>
+            <em *ngIf="firstName.errors.nospecial">Type only letters</em>
+          </span>
         </div>
         
         <div class="field-wrap">
           <label [class]="ln.activeClasses">
             Last Name<span class="req">*</span>
           </label>
-          <input type="text"required autocomplete="off" appActiveHighlight  #ln='highlight'  formControlName="lastName"/>
+          <input type="text"required autocomplete="off" [appActiveHighlight]="'active hightlight'"   #ln='highlight'  formControlName="lastName"/>
+          <span class="errors" *ngIf="lastName.errors">
+            <em *ngIf="lastName.errors.required && lastName.dirty"> Last Name is required</em>
+            <em *ngIf="lastName.errors.minlength">Minimal length is 4 symbols</em>
+            <em *ngIf="lastName.errors.nospecial">Type only letters</em>
+          </span>
         </div>
       </div>
       
@@ -33,7 +44,13 @@
         <label [class]="eaddr.activeClasses">
           Email Address<span class="req">*</span>
         </label>
-        <input type="email" required autocomplete="off" appActiveHighlight  #eaddr='highlight'  formControlName="email"/>
+        <input type="email" required autocomplete="off" [appActiveHighlight]="'active hightlight'"   #eaddr='highlight'  formControlName="email"/>
+        <span class="errors" *ngIf="email.errors">
+          <em *ngIf="email.errors.required && lastName.dirty"> email is required</em>
+          <em *ngIf="email.errors.email">Email format should be here</em>
+          <em *ngIf="email.errors.userrequired">User already exists</em>
+
+        </span>
       </div>
       
       
@@ -41,11 +58,16 @@
         <label [class]="pwddir.activeClasses">
           Set A Password<span class="req">*</span>
         </label>
-        <input type="password"required autocomplete="off" appActiveHighlight  #pwddir='highlight' formControlName="pwd1"/>
+        <input type="password"required autocomplete="off" [appActiveHighlight]="'active hightlight'"   #pwddir='highlight' formControlName="pwd1"/>
+        <span class="errors" *ngIf="pwd1.errors">
+          <em *ngIf="pwd1.errors.required && lastName.dirty"> password is required</em>
+          <em *ngIf="pwd1.errors.minlength">Minimal length is 6 symbols</em>
+          
+        </span>
       </div>
       
-      <button type="submit" class="button button-block" [disabled]="!signupForm.valid" >Get Started</button>
-      
+      <button type="submit" class="button button-block" [disabled]="!signupForm.valid &&!signupSubmitted" >{{ signupSubmitted ? "You successfully signed up!": "Get Started"}}</button>
+            
       </form>
 
     </div>
@@ -53,37 +75,42 @@
     <div id="login" [hidden]="currentPage!=='login' ">   
       <h1>Welcome Back!</h1>
       
-      <form action="/" method="post" [formGroup]="loginForm">
+      <form action="/" method="post" [formGroup]="loginForm" (submit)="loginSubmitted=true;">
       
         <div class="field-wrap">
         <label  [class]="eaddr2.activeClasses">
           Email Address<span class="req">*</span>
         </label>
-        <input type="email"required autocomplete="off" appActiveHighlight  #eaddr2='highlight' formControlName='email2'/>
+        <input type="email"required autocomplete="off" [appActiveHighlight]="'active hightlight'"   #eaddr2='highlight' formControlName='email2'/>
+        <span class="errors" *ngIf="email2.errors">
+            <em *ngIf="email2.errors.required && lastName.dirty"> email is required</em>
+            <em *ngIf="email2.errors.email">Email format should be here</em>
+            <em *ngIf="email2.errors.userrequired">User does not exists</em>
+  
+          </span>
       </div>
       
       <div class="field-wrap">
         <label [class]="pwddir2.activeClasses">
           Password<span class="req">*</span>
         </label>
-        <input type="password"required autocomplete="off" appActiveHighlight #pwddir2='highlight' formControlName='pwd2'/>
+        <input type="password"required autocomplete="off" [appActiveHighlight]="'active hightlight'" #pwddir2='highlight' formControlName='pwd2'/>
+        <span class="errors" *ngIf="pwd2.errors">
+            <em *ngIf="pwd2.errors.required && lastName.dirty"> password is required</em>
+            <em *ngIf="pwd2.errors.minlength">Minimal length is 6 symbols</em>            
+          </span>
       </div>
       
       <p class="forgot"><a href="#">Forgot Password?</a></p>
       
-      <button class="button button-block">Log In</button>
-      
+      <button class="button button-block" [disabled]="!loginForm.valid &&!loginSubmitted" >{{ loginSubmitted ? "You successfully logged in!": "Log in"}}</button>
+            
       </form>
 
     </div>
     
   </div><!-- tab-content -->
-  <label class="highlight">
-  {{firstName.errors|json}}
-      {{lastName.errors|json}}
-      {{email.errors|json}}
-      {{pwd1.errors |json}}
-      </label>
+  
+  
 </div> <!-- /form -->
 
-{{signupSubmitted}}
